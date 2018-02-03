@@ -3,11 +3,9 @@ package com.feiyunsoft.linghangcalculator
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.support.v4.app.ActivityCompat
@@ -33,11 +31,10 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.Spinner
 import android.widget.TextView
+import kotlinx.android.synthetic.main.main_layout.*
 
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
 import java.util.ArrayList
 import java.util.HashMap
 import java.util.Timer
@@ -46,44 +43,51 @@ import java.util.TimerTask
 
 class MainActivity : AppCompatActivity() {
 
+    var DATABASE_PATH: String = ""
+    var DATABASE_NAME: String = ""
+    private val PREFS_QFSK = "StoredQFSK"
 
     private val TAG = "LinghangCalculator"
-    private var mGpsInfo: TextView? = null   //mGpsInfo用于在没有卫星信号的时候显示信息
-    private var weiduTextView: TextView? = null
-    private var jingduTextView: TextView? = null   //weiduTextView是主页上的纬度显示区
-    private var daifeijuTextView: TextView? = null
-    private var daifeishiTextView: TextView? = null
-    private var disuTextView: TextView? = null
-    private var bucangshijianTextView: TextView? = null
-    private var qifeishikeTextView: TextView? = null
-    private var weixingshijianTextView: TextView? = null
-    private var shijianwuchaTextView: TextView? = null
-    private var yudashikeTextView: TextView? = null
-    private var mubiaoyudashikeTextView: TextView? = null
-    private var yingfeidisuTextView: TextView? = null
-    private var daifeiju_lableTextView: TextView? = null
-    private var daifeishi_lableTextView: TextView? = null
-    private var yudashike_lableTextView: TextView? = null
-    private var disu_lableTextView: TextView? = null
-    private var weidu_lableTextView: TextView? = null
-    private var jingdu_lableTextView: TextView? = null
+/*
+    private var TextView_GpsInfo: TextView? = null   //mGpsInfo用于在没有卫星信号的时候显示信息
+    private var weidu_text_view: TextView? = null
+    private var jingdu_text_view: TextView? = null   //weiduTextView是主页上的纬度显示区
+    private var daifeiju_text_view: TextView? = null
+    private var daifeishi_text_view: TextView? = null
+    private var disu_text_view: TextView? = null
+    private var buchangshijian_text_view: TextView? = null
+    private var qifeishike_text_view: TextView? = null
+    private var weixingshijian_text_view: TextView? = null
+    private var shijianwucha_text_view: TextView? = null
+    private var yudashike_text_view: TextView? = null
+    private var mubiaoyudashike_text_view: TextView? = null
+    private var yingfeidisu_text_view: TextView? = null
+    private var daifeiju_lable_text_view: TextView? = null
+    private var daifeishi_lable_text_view: TextView? = null
+    private var yudashike_lable_text_view: TextView? = null
+    private var disu_lable_text_view: TextView? = null
+    private var weidu_lable_text_view: TextView? = null
+    private var jingdu_lable_text_view: TextView? = null
 
-    private var bucangshijianButton: Button? = null
+    private var buchangshijian_button: Button? = null
     private var jishiButton: Button? = null
-    private var jishichongzhiButton: Button? = null
+    private var chongzhi_button: Button? = null
     private var shezhiButton: Button? = null
-    private var sheqifeishiButton: Button? = null
-    private var mubiaotuisuanButton: Button? = null
-    private var xianshixiangxiButton: Button? = null
-    private var yincangxiangxiButton: Button? = null   //shezhiButton是主页上的设置按钮
+    private var sheqifeishi_button: Button? = null
+    private var mubiaotuisuan_button: Button? = null
+    private var xianshixiangxi_button: Button? = null
+    private var yincangxiangxi_button: Button? = null   //shezhiButton是主页上的设置按钮
+*/
 
     private var QFSK: Long = 0
 
-    private var hangxianSpinner: Spinner? = null
+/*
+    private var hangxian_spinner: Spinner? = null
     private var jichangSpinner: Spinner? = null
-    private var hangdianSpinner: Spinner? = null
+    private var hangdian_spinner: Spinner? = null
     private var tujiSpinner: Spinner? = null
-    private var qifeifangxiangSpinner: Spinner? = null
+    private var qifeifangxiang_spinner: Spinner? = null
+*/
 
     private var sqLiteDatabase: SQLiteDatabase? = null
     private var adapter: ArrayAdapter<String>? = null
@@ -95,7 +99,9 @@ class MainActivity : AppCompatActivity() {
     private val hangdian_list = ArrayList<String>()
     private val qifeifangxiang_list = ArrayList<String>()
     private val hangdian_info_list = ArrayList<hangdian_info>()
-    private var hangdianinfoListView: ListView? = null
+/*
+    private var hangdianinfo_listview: ListView? = null
+*/
     private var selected_jichangname: String? = null
     private var selected_jichangid: String? = null
     private var selected_hangxianname: String? = null
@@ -141,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
                 val timeFormat = TimeFormat()
                 val t = timeFormat.BeiJingtime(mGpsTime!!)
-                weixingshijianTextView!!.text = t
+                weixingshijian_text_view!!.text = t
             }
         }
     }
@@ -162,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                         val timeFormat = TimeFormat()
 
                         disu = location.speed.toDouble()//////米每秒
-                        disuTextView!!.setText(String.format("%.1f", disu * 3.6))
+                        disu_text_view!!.setText(String.format("%.1f", disu * 3.6))
 
 
                         //                            disu=200;
@@ -218,7 +224,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         val daifeiju = locationUtils.getDistance(location.latitude, location.longitude, hangdianweidu_jisuan, hangdianjingdu_jisuan) / 1000   //得到待飞距 km
-                        daifeijuTextView!!.text = "" + String.format("%.2f", daifeiju)  //显示待飞距 km
+                        daifeiju_text_view!!.text = "" + String.format("%.2f", daifeiju)  //显示待飞距 km
 
                         val number_list = hangdian_list.size
                         var a = numberselectHangdian
@@ -226,29 +232,29 @@ class MainActivity : AppCompatActivity() {
                             a = -1
                         }
                         if (daifeiju < 5) {
-                            hangdianSpinner!!.setSelection(a + 1)
+                            hangdian_spinner!!.setSelection(a + 1)
                         }
 
                         if (disu != 0.0) {
                             val daifeishi = (daifeiju * 1000 / disu).toLong() * 1000  // long 待飞时  单位 毫秒
-                            daifeishiTextView!!.text = timeFormat.BeiJingtime(daifeishi - 28800000) //显示待飞时
+                            daifeishi_text_view!!.text = timeFormat.BeiJingtime(daifeishi - 28800000) //显示待飞时
 
 
                             val yudashike_shiji: Long
 
                             when (selected_shifoutuji) {
                                 "是" -> if (disu < 237) {
-                                    yudashike_biaozhun_final_jisuan = yudashike_biaozhun_jisuan + java.lang.Long.parseLong(bucangshijianButton!!.text.toString()) * 1000
-                                    yingfeidisuTextView!!.setTextColor(Color.RED)
-                                    yudashikeTextView!!.setTextColor(Color.RED)
-                                    shijianwuchaTextView!!.setTextColor(Color.RED)
-                                    mubiaoyudashikeTextView!!.setTextColor(Color.RED)
+                                    yudashike_biaozhun_final_jisuan = yudashike_biaozhun_jisuan + java.lang.Long.parseLong(buchangshijian_button!!.text.toString()) * 1000
+                                    yingfeidisu_text_view!!.setTextColor(Color.RED)
+                                    yudashike_text_view!!.setTextColor(Color.RED)
+                                    shijianwucha_text_view!!.setTextColor(Color.RED)
+                                    mubiaoyudashike_text_view!!.setTextColor(Color.RED)
                                 } else {
                                     yudashike_biaozhun_final_jisuan = yudashike_biaozhun_jisuan
-                                    yingfeidisuTextView!!.setTextColor(Color.BLACK)
-                                    yudashikeTextView!!.setTextColor(Color.BLACK)
-                                    shijianwuchaTextView!!.setTextColor(Color.BLACK)
-                                    mubiaoyudashikeTextView!!.setTextColor(Color.BLACK)
+                                    yingfeidisu_text_view!!.setTextColor(Color.BLACK)
+                                    yudashike_text_view!!.setTextColor(Color.BLACK)
+                                    shijianwucha_text_view!!.setTextColor(Color.BLACK)
+                                    mubiaoyudashike_text_view!!.setTextColor(Color.BLACK)
                                 }
                                 "否" -> yudashike_biaozhun_final_jisuan = yudashike_biaozhun_jisuan
                                 else -> {
@@ -261,8 +267,8 @@ class MainActivity : AppCompatActivity() {
                             val wucha = yudashike_shiji - yudashike_biaozhun_final_jisuan
                             var kefeishijian: Long = 0
                             kefeishijian = yudashike_biaozhun_final_jisuan - timeToms(timeFormat.BeiJingtime(mGpsTime!!))
-                            yudashikeTextView!!.text = timeFormat.BeiJingtime(yudashike_shiji - 28800000)
-                            mubiaoyudashikeTextView!!.text = timeFormat.BeiJingtime(yudashike_biaozhun_final_jisuan - 28800000)
+                            yudashike_text_view!!.text = timeFormat.BeiJingtime(yudashike_shiji - 28800000)
+                            mubiaoyudashike_text_view!!.text = timeFormat.BeiJingtime(yudashike_biaozhun_final_jisuan - 28800000)
 
 
                             var zaowan = ""
@@ -276,29 +282,29 @@ class MainActivity : AppCompatActivity() {
                             if (BuildConfig.DEBUG)
 
                                 if (QFSK != 0L) {
-                                    shijianwuchaTextView!!.text = "" + zaowan + timeFormat.BeiJingtime(Math.abs(wucha) - 28800000)
-                                    yingfeidisuTextView!!.setText(String.format("%.2f", yingfeidisu))
+                                    shijianwucha_text_view!!.text = "" + zaowan + timeFormat.BeiJingtime(Math.abs(wucha) - 28800000)
+                                    yingfeidisu_text_view!!.setText(String.format("%.2f", yingfeidisu))
                                 } else {
-                                    shijianwuchaTextView!!.text = "无法计算"
-                                    yingfeidisuTextView!!.text = "无法计算"
+                                    shijianwucha_text_view!!.text = "无法计算"
+                                    yingfeidisu_text_view!!.text = "无法计算"
                                 }
                         } else {
-                            daifeishiTextView!!.text = "-- : -- : --"
-                            yudashikeTextView!!.text = "-- : -- : --"
-                            shijianwuchaTextView!!.text = "-- : -- : --"
-                            yingfeidisuTextView!!.text = "--- . --"
-                            mubiaoyudashikeTextView!!.text = "-- : -- : --"
+                            daifeishi_text_view!!.text = "-- : -- : --"
+                            yudashike_text_view!!.text = "-- : -- : --"
+                            shijianwucha_text_view!!.text = "-- : -- : --"
+                            yingfeidisu_text_view!!.text = "--- . --"
+                            mubiaoyudashike_text_view!!.text = "-- : -- : --"
                         }
                     } else {
-                        daifeishiTextView!!.text = "-------"
-                        yudashikeTextView!!.text = "-------"
-                        shijianwuchaTextView!!.text = "-------"
-                        yingfeidisuTextView!!.text = "-------"
-                        disuTextView!!.text = "-------"
-                        daifeijuTextView!!.text = "-------"
-                        weiduTextView!!.text = "-------"
-                        jingduTextView!!.text = "-------"
-                        mubiaoyudashikeTextView!!.text = "无GPS信号"
+                        daifeishi_text_view!!.text = "-------"
+                        yudashike_text_view!!.text = "-------"
+                        shijianwucha_text_view!!.text = "-------"
+                        yingfeidisu_text_view!!.text = "-------"
+                        disu_text_view!!.text = "-------"
+                        daifeiju_text_view!!.text = "-------"
+                        weidu_text_view!!.text = "-------"
+                        jingdu_text_view!!.text = "-------"
+                        mubiaoyudashike_text_view!!.text = "无GPS信号"
                     }
 
                 } catch (ignored: Exception) {
@@ -335,7 +341,9 @@ class MainActivity : AppCompatActivity() {
         val location = GpsManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
 
+/*
         findview()
+*/
         getStoredDATA()
         spinner_tianchong()
         printGpsLocation(location)
@@ -351,73 +359,71 @@ class MainActivity : AppCompatActivity() {
      * 设置监听器，都是以匿名类的方式。
      */
     private fun setlistener() {
-        shezhiButton!!.setOnClickListener {
+        shezhi_button.setOnClickListener {
             AAA = 1
             val intent = Intent(this@MainActivity, SetupActivity::class.java)
             startActivityForResult(intent, 1)
         }
 
-        mubiaotuisuanButton!!.setOnClickListener {
+        mubiaotuisuan_button.setOnClickListener {
             AAA = 1
             val intent = Intent(this@MainActivity, MubiaotuisuanActivity::class.java)
             startActivityForResult(intent, 1)
         }
 
 
-        jishiButton!!.setOnClickListener {
+        jishi_button.setOnClickListener {
             val timeFormat = TimeFormat()
             QFSK = timeToms(timeFormat.BeiJingtime(mGpsTime!!))
             storedata()
-            qifeishikeTextView!!.text = timeFormat.BeiJingtime(QFSK - 8 * 3600000)
+            qifeishike_text_view.text = timeFormat.BeiJingtime(QFSK - 8 * 3600000)
             biaogetianchong()
-            jishiButton!!.visibility = View.GONE
-            jishichongzhiButton!!.visibility = View.VISIBLE
-            //shezhiButton.setVisibility(View.GONE);
+            jishi_button.visibility = View.GONE
+            chongzhi_button.visibility = View.VISIBLE
             AAA = 1
         }
 
-        jishichongzhiButton!!.setOnClickListener { openDialog() }
+        chongzhi_button.setOnClickListener { openDialog() }
 
-        bucangshijianButton!!.setOnClickListener { shezhibuchangshijian() }
+        buchangshijian_button.setOnClickListener { shezhibuchangshijian() }
 
-        sheqifeishiButton!!.setOnClickListener { sheqifeishi() }
+        sheqifeishi_button.setOnClickListener { sheqifeishi() }
 
-        xianshixiangxiButton!!.setOnClickListener {
-            daifeiju_lableTextView!!.visibility = View.VISIBLE
-            daifeishi_lableTextView!!.visibility = View.VISIBLE
-            yudashike_lableTextView!!.visibility = View.VISIBLE
-            disu_lableTextView!!.visibility = View.VISIBLE
-            weidu_lableTextView!!.visibility = View.VISIBLE
-            jingdu_lableTextView!!.visibility = View.VISIBLE
+        xianshixiangxi_button.setOnClickListener {
+            daifeiju_lable_text_view!!.visibility = View.VISIBLE
+            daifeishi_lable_text_view!!.visibility = View.VISIBLE
+            yudashike_lable_text_view!!.visibility = View.VISIBLE
+            disu_lable_text_view!!.visibility = View.VISIBLE
+            weidu_lable_text_view!!.visibility = View.VISIBLE
+            jingdu_lable_text_view!!.visibility = View.VISIBLE
+            daifeiju_text_view!!.visibility = View.VISIBLE
+            daifeishi_text_view!!.visibility = View.VISIBLE
+            yudashike_text_view!!.visibility = View.VISIBLE
+            disu_text_view!!.visibility = View.VISIBLE
+            weidu_text_view!!.visibility = View.VISIBLE
+            jingdu_text_view!!.visibility = View.VISIBLE
+            yincangxiangxi_button!!.visibility = View.VISIBLE
 
-            daifeijuTextView!!.visibility = View.VISIBLE
-            daifeishiTextView!!.visibility = View.VISIBLE
-            yudashikeTextView!!.visibility = View.VISIBLE
-            disuTextView!!.visibility = View.VISIBLE
-            weiduTextView!!.visibility = View.VISIBLE
-            jingduTextView!!.visibility = View.VISIBLE
-
-            yincangxiangxiButton!!.visibility = View.VISIBLE
-            xianshixiangxiButton!!.visibility = View.GONE
+            xianshixiangxi_button!!.visibility = View.GONE
         }
 
-        yincangxiangxiButton!!.setOnClickListener {
-            daifeiju_lableTextView!!.visibility = View.GONE
-            daifeishi_lableTextView!!.visibility = View.GONE
-            yudashike_lableTextView!!.visibility = View.GONE
-            disu_lableTextView!!.visibility = View.GONE
-            weidu_lableTextView!!.visibility = View.GONE
-            jingdu_lableTextView!!.visibility = View.GONE
+        yincangxiangxi_button!!.setOnClickListener {
+            daifeiju_lable_text_view!!.visibility = View.GONE
+            daifeishi_lable_text_view!!.visibility = View.GONE
+            yudashike_lable_text_view!!.visibility = View.GONE
+            disu_lable_text_view!!.visibility = View.GONE
+            weidu_lable_text_view!!.visibility = View.GONE
+            jingdu_lable_text_view!!.visibility = View.GONE
 
-            daifeijuTextView!!.visibility = View.GONE
-            daifeishiTextView!!.visibility = View.GONE
-            yudashikeTextView!!.visibility = View.GONE
-            disuTextView!!.visibility = View.GONE
-            weiduTextView!!.visibility = View.GONE
-            jingduTextView!!.visibility = View.GONE
+            daifeiju_text_view!!.visibility = View.GONE
+            daifeishi_text_view!!.visibility = View.GONE
+            yudashike_text_view!!.visibility = View.GONE
+            disu_text_view!!.visibility = View.GONE
+            weidu_text_view!!.visibility = View.GONE
+            jingdu_text_view!!.visibility = View.GONE
 
-            yincangxiangxiButton!!.visibility = View.GONE
-            xianshixiangxiButton!!.visibility = View.VISIBLE
+            yincangxiangxi_button!!.visibility = View.GONE
+            xianshixiangxi_button!!.visibility = View.VISIBLE
         }
 
     }
@@ -455,179 +461,138 @@ class MainActivity : AppCompatActivity() {
             numberstoredJichang = 0
         }
 
-        jichangSpinner!!.adapter = adapter
-        jichangSpinner!!.setSelection(numberstoredJichang)
-        jichangSpinner!!.setOnItemSelectedListener(object : Spinner.OnItemSelectedListener {
-            override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
-                selected_jichangname = adapter!!.getItem(arg2)
-                numberselectJichang = arg2
+        jichang_spinner!!.adapter = adapter
+        jichang_spinner!!.setSelection(numberstoredJichang)
+
+        jichang_spinner!!.setOnItemClickListener { adapterView, view, i, l ->
+            selected_jichangname = adapter!!.getItem(i)
+            numberselectJichang = i
+            storedata()
+
+            var jichang_map_selected = HashMap<String, String>()
+            jichang_map_selected = jichang_spinnerlist[numberselectJichang]
+            selected_jichangid = jichang_map_selected["JiChangId"]
+
+            hangxian_list.clear()
+            val hangxian_spinnerlist = ArrayList<HashMap<String, String>>()
+            val cursor2 = sqLiteDatabase!!.rawQuery("select * from HangXian where jichang_ID = '$selected_jichangid' and used = 1 ", null)
+            while (cursor2.moveToNext()) {
+                val HangXianId = cursor2.getString(cursor2.getColumnIndex("hangxian_ID"))
+                val HangXianName = cursor2.getString(cursor2.getColumnIndex("hangxia_NAME"))
+                val hangxian_spinnermap = HashMap<String, String>()
+                hangxian_spinnermap["HangXianId"] = HangXianId
+                hangxian_spinnermap["HangXianName"] = HangXianName
+                hangxian_spinnerlist.add(hangxian_spinnermap)
+                hangxian_list.add(HangXianName)
+            }
+            cursor2.close()
+
+            val number_list = hangxian_list.size
+            if (number_list <= numberstoredHangxian) {
+                numberstoredHangxian = 0
+            }
+            hangxian_spinner!!.adapter = adapter1
+            hangxian_spinner!!.setSelection(numberstoredHangxian)
+            hangxian_spinner!!.setOnItemClickListener { adapterView, view, i, l ->
+                selected_hangxianname = adapter1!!.getItem(i)
+                numberselectHangxian = i
                 storedata()
 
-                var jichang_map_selected = HashMap<String, String>()
-                jichang_map_selected = jichang_spinnerlist[numberselectJichang]
-                selected_jichangid = jichang_map_selected["JiChangId"]
-                /*Cursor cursor1 = sqLiteDatabase.rawQuery("select jichang_ID from JiChang where jichang_NAME = '" + selected_jichangname + "' and used = 1", null);
-                if (BuildConfig.DEBUG) Log.d("ABC", "选择的机场是：" + selected_jichangname);
-                cursor1.moveToFirst();
-                selected_jichangid = cursor1.getString(cursor1.getColumnIndex("jichang_ID"));
-                cursor1.close();*/
-
-
-                hangxian_list.clear()
-                val hangxian_spinnerlist = ArrayList<HashMap<String, String>>()
-                val cursor2 = sqLiteDatabase!!.rawQuery("select * from HangXian where jichang_ID = '$selected_jichangid' and used = 1 ", null)
-                while (cursor2.moveToNext()) {
-                    val HangXianId = cursor2.getString(cursor2.getColumnIndex("hangxian_ID"))
-                    val HangXianName = cursor2.getString(cursor2.getColumnIndex("hangxia_NAME"))
-                    val hangxian_spinnermap = HashMap<String, String>()
-                    hangxian_spinnermap["HangXianId"] = HangXianId
-                    hangxian_spinnermap["HangXianName"] = HangXianName
-                    hangxian_spinnerlist.add(hangxian_spinnermap)
-                    hangxian_list.add(HangXianName)
-                }
-                cursor2.close()
-
-                val number_list = hangxian_list.size
-                if (number_list <= numberstoredHangxian) {
-                    numberstoredHangxian = 0
-                }
-                hangxianSpinner!!.adapter = adapter1
-                hangxianSpinner!!.setSelection(numberstoredHangxian)
-                hangxianSpinner!!.setOnItemSelectedListener(object : Spinner.OnItemSelectedListener {
-                    override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
-                        selected_hangxianname = adapter1!!.getItem(arg2)
-                        numberselectHangxian = arg2
-                        storedata()
-
-                        var hangxian_map_selected = HashMap<String, String>()
-                        hangxian_map_selected = hangxian_spinnerlist[numberselectHangxian]
-                        selected_hangxianid = hangxian_map_selected["HangXianId"]
-
-                        /*Cursor cursor3 = sqLiteDatabase.rawQuery("select hangxian_ID from HangXian where hangxia_NAME = '" + selected_hangxianname + "'and jichang_ID = '"+selected_jichangid +"' and used = 1", null);
-                        while (cursor3.moveToNext()) {
-                            selected_hangxianid = cursor3.getString(cursor3.getColumnIndex("hangxian_ID"));
-                        }
-                        cursor3.close();*/
-
-                        biaogetianchong()
-                        hangdian_list.clear()
-                        val cursor4 = sqLiteDatabase!!.rawQuery("select * from HangDian where hangxian_ID = '$selected_hangxianid' and used = 1 order by shunxu", null)
-                        while (cursor4.moveToNext()) {
-                            val HangDianNanme = cursor4.getString(cursor4.getColumnIndex("hangdian_NAME"))
-                            hangdian_list.add(HangDianNanme)
-                        }
-                        cursor4.close()
-                        val number_list = hangdian_list.size
-                        if (number_list <= numberstoredHangdian) {
-                            numberstoredHangdian = 0
-                        }
-                        hangdianSpinner!!.adapter = adapter2
-                        hangdianSpinner!!.setSelection(numberstoredHangdian)
-                        hangdianSpinner!!.setOnItemSelectedListener(object : Spinner.OnItemSelectedListener {
-                            override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
-                                selected_hangdianname = adapter2!!.getItem(arg2)
-                                numberselectHangdian = arg2
-                                storedata()
-                                arg0.visibility = View.VISIBLE
-                                biaogetianchong()
-                            }
-
-                            override fun onNothingSelected(arg0: AdapterView<*>) {
-                                arg0.visibility = View.VISIBLE
-                            }
-                        })
-
-                        arg0.visibility = View.VISIBLE
-                    }
-
-                    override fun onNothingSelected(arg0: AdapterView<*>) {
-                        arg0.visibility = View.VISIBLE
-                    }
-                })
-
-                val cursor4 = sqLiteDatabase!!.rawQuery("select qifeifangxiang from JiChang where jichang_ID = '$selected_jichangid'", null)
-                qifeifangxiang_list.clear()
+                var hangxian_map_selected = HashMap<String, String>()
+                hangxian_map_selected = hangxian_spinnerlist[numberselectHangxian]
+                selected_hangxianid = hangxian_map_selected["HangXianId"]
+                biaogetianchong()
+                hangdian_list.clear()
+                val cursor4 = sqLiteDatabase!!.rawQuery("select * from HangDian where hangxian_ID = '$selected_hangxianid' and used = 1 order by shunxu", null)
                 while (cursor4.moveToNext()) {
-                    val Qifeifangxiang = cursor4.getString(cursor4.getColumnIndex("qifeifangxiang"))
-                    var Qifeifangxiang1 = ""
-                    var Qifeifangxiang2 = ""
-                    var Qifeifangxiang3 = ""
-                    var Qifeifangxiang4 = ""
-                    if (Qifeifangxiang.contains("东")) {
-                        Qifeifangxiang1 = "东"
-                    }
-                    if (Qifeifangxiang.contains("南")) {
-                        Qifeifangxiang2 = "南"
-                    }
-                    if (Qifeifangxiang.contains("西")) {
-                        Qifeifangxiang3 = "西"
-                    }
-                    if (Qifeifangxiang.contains("北")) {
-                        Qifeifangxiang4 = "北"
-                    }
-                    if (!Qifeifangxiang1.isEmpty()) {
-                        qifeifangxiang_list.add(Qifeifangxiang1)
-                    }
-                    if (!Qifeifangxiang2.isEmpty()) {
-                        qifeifangxiang_list.add(Qifeifangxiang2)
-                    }
-                    if (!Qifeifangxiang3.isEmpty()) {
-                        qifeifangxiang_list.add(Qifeifangxiang3)
-                    }
-                    if (!Qifeifangxiang4.isEmpty()) {
-                        qifeifangxiang_list.add(Qifeifangxiang4)
-                    }
-
-
+                    val HangDianNanme = cursor4.getString(cursor4.getColumnIndex("hangdian_NAME"))
+                    hangdian_list.add(HangDianNanme)
                 }
                 cursor4.close()
-                qifeifangxiangSpinner!!.adapter = adapter3
-                qifeifangxiangSpinner!!.setSelection(numberstoredQifeifangxiang)
-                qifeifangxiangSpinner!!.setOnItemSelectedListener(object : Spinner.OnItemSelectedListener {
-                    override fun onItemSelected(arg0: AdapterView<*>, arg1: View, arg2: Int, arg3: Long) {
-                        selected_qifeifangxiang = adapter3!!.getItem(arg2)
-                        numberselectQifeifangxiang = arg2
-                        storedata()
-                        biaogetianchong()
-                        arg0.visibility = View.VISIBLE
-                    }
-
-                    override fun onNothingSelected(arg0: AdapterView<*>) {
-                        arg0.visibility = View.VISIBLE
-                    }
-                })
-
-
-                arg0.visibility = View.VISIBLE
+                val number_list = hangdian_list.size
+                if (number_list <= numberstoredHangdian) {
+                    numberstoredHangdian = 0
+                }
+                hangdian_spinner!!.adapter = adapter2
+                hangdian_spinner!!.setSelection(numberstoredHangdian)
+                hangdian_spinner!!.setOnItemClickListener { adapterView, view, i, l ->
+                    selected_hangdianname = adapter2!!.getItem(i)
+                    numberselectHangdian = i
+                    storedata()
+                    adapterView.visibility = View.VISIBLE
+                    biaogetianchong()
+                }
+                adapterView.visibility = View.VISIBLE
             }
 
-            override fun onNothingSelected(arg0: AdapterView<*>) {
-                arg0.visibility = View.VISIBLE
-            }
-        })
 
-        tujiSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            val cursor4 = sqLiteDatabase!!.rawQuery("select qifeifangxiang from JiChang where jichang_ID = '$selected_jichangid'", null)
+            qifeifangxiang_list.clear()
+            while (cursor4.moveToNext()) {
+                val Qifeifangxiang = cursor4.getString(cursor4.getColumnIndex("qifeifangxiang"))
+                var Qifeifangxiang1 = ""
+                var Qifeifangxiang2 = ""
+                var Qifeifangxiang3 = ""
+                var Qifeifangxiang4 = ""
+                if (Qifeifangxiang.contains("东")) {
+                    Qifeifangxiang1 = "东"
+                }
+                if (Qifeifangxiang.contains("南")) {
+                    Qifeifangxiang2 = "南"
+                }
+                if (Qifeifangxiang.contains("西")) {
+                    Qifeifangxiang3 = "西"
+                }
+                if (Qifeifangxiang.contains("北")) {
+                    Qifeifangxiang4 = "北"
+                }
+                if (!Qifeifangxiang1.isEmpty()) {
+                    qifeifangxiang_list.add(Qifeifangxiang1)
+                }
+                if (!Qifeifangxiang2.isEmpty()) {
+                    qifeifangxiang_list.add(Qifeifangxiang2)
+                }
+                if (!Qifeifangxiang3.isEmpty()) {
+                    qifeifangxiang_list.add(Qifeifangxiang3)
+                }
+                if (!Qifeifangxiang4.isEmpty()) {
+                    qifeifangxiang_list.add(Qifeifangxiang4)
+                }
+            }
+            cursor4.close()
+            qifeifangxiang_spinner!!.adapter = adapter3
+            qifeifangxiang_spinner!!.setSelection(numberstoredQifeifangxiang)
+            qifeifangxiang_spinner!!.setOnItemClickListener { adapterView, view, i, l ->
+                selected_qifeifangxiang = adapter3!!.getItem(i)
+                numberselectQifeifangxiang = i
+                storedata()
+                biaogetianchong()
+                adapterView.visibility = View.VISIBLE
+            }
+            adapterView.visibility = View.VISIBLE
+        }
+
+
+        shifoutuji_spinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val sftj = resources.getStringArray(R.array.shifoutuji)
                 selected_shifoutuji = sftj[position]
-                //  numberselectshifoutuji = position;
-                //   tujiSpinner.setSelection(2,true);
                 when (selected_shifoutuji) {
                     "是" -> {
-                        bucangshijianButton!!.visibility = View.VISIBLE
-                        bucangshijianTextView!!.visibility = View.VISIBLE
-                        bucangshijianButton!!.setTextColor(Color.RED)
-                        bucangshijianTextView!!.setTextColor(Color.RED)
-                        mubiaoyudashikeTextView!!.setTextColor(Color.RED)
+                        buchangshijian_button!!.visibility = View.VISIBLE
+                        buchangshijian_text_view!!.visibility = View.VISIBLE
+                        buchangshijian_button!!.setTextColor(Color.RED)
+                        buchangshijian_text_view!!.setTextColor(Color.RED)
+                        mubiaoyudashike_text_view!!.setTextColor(Color.RED)
                         biaogetianchong()
                     }
                     "否" -> {
-                        bucangshijianButton!!.visibility = View.INVISIBLE
-                        bucangshijianTextView!!.visibility = View.INVISIBLE
-                        yudashikeTextView!!.setTextColor(Color.BLACK)
-                        yingfeidisuTextView!!.setTextColor(Color.BLACK)
-                        shijianwuchaTextView!!.setTextColor(Color.BLACK)
-                        mubiaoyudashikeTextView!!.setTextColor(Color.BLACK)
+                        buchangshijian_button!!.visibility = View.INVISIBLE
+                        buchangshijian_text_view!!.visibility = View.INVISIBLE
+                        yudashike_text_view!!.setTextColor(Color.BLACK)
+                        yingfeidisu_text_view!!.setTextColor(Color.BLACK)
+                        shijianwucha_text_view!!.setTextColor(Color.BLACK)
+                        mubiaoyudashike_text_view!!.setTextColor(Color.BLACK)
                         biaogetianchong()
                     }
                     else -> {
@@ -646,7 +611,7 @@ class MainActivity : AppCompatActivity() {
 
 
         if (location != null) {
-            mGpsInfo!!.text = "精度：" + location.accuracy +
+            TextView_GpsInfo!!.text = "精度：" + location.accuracy +
                     "\n海拔：" + location.altitude +
                     "\n航向：" + location.bearing +
                     "\n速度：" + location.speed +
@@ -655,8 +620,8 @@ class MainActivity : AppCompatActivity() {
                     "\n时间：" + location.time
 
             val jingweiduFormat = JingweiduFormat()
-            weiduTextView!!.text = jingweiduFormat.WeiDu(location.latitude)//显示纬度
-            jingduTextView!!.text = jingweiduFormat.JingDu(location.longitude)  //显示经度
+            weidu_text_view!!.text = jingweiduFormat.WeiDu(location.latitude)//显示纬度
+            jingdu_text_view!!.text = jingweiduFormat.JingDu(location.longitude)  //显示经度
 
 
         }
@@ -699,7 +664,7 @@ class MainActivity : AppCompatActivity() {
         if (mSpSettings!!.getBoolean("isKeep", false)) {
             QFSK = java.lang.Long.parseLong(mSpSettings!!.getString("storedqfsk", ""))
             val timeFormat = TimeFormat()
-            qifeishikeTextView!!.text = timeFormat.BeiJingtime(QFSK - 28800000)
+            qifeishike_text_view!!.text = timeFormat.BeiJingtime(QFSK - 28800000)
             numberstoredJichang = mSpSettings!!.getInt("numberJichang", 0)
             numberstoredHangxian = mSpSettings!!.getInt("numberHangxian", 0)
             numberstoredHangdian = mSpSettings!!.getInt("numberHangdian", 0)
@@ -715,9 +680,9 @@ class MainActivity : AppCompatActivity() {
                 .setMessage("是否结束计时？")
                 .setPositiveButton("确认"
                 ) { dialog, which ->
-                    jishichongzhiButton!!.visibility = View.GONE
-                    jishiButton!!.visibility = View.VISIBLE
-                    shezhiButton!!.visibility = View.VISIBLE
+                    chongzhi_button.visibility = View.GONE
+                    jishi_button.visibility = View.VISIBLE
+                    shezhi_button.visibility = View.VISIBLE
                     AAA = 0
                 }
                 .setNegativeButton("取消") { dialog, which -> dialog.dismiss() }.show()
@@ -734,9 +699,9 @@ class MainActivity : AppCompatActivity() {
                 .setPositiveButton("确定"
                 ) { dialog, which ->
                     if (!TextUtils.isEmpty(bucangshijianEditText.text)) {
-                        bucangshijianButton!!.text = bucangshijianEditText.text.toString()
+                        buchangshijian_button!!.text = bucangshijianEditText.text.toString()
                     } else {
-                        bucangshijianButton!!.text = "0"
+                        buchangshijian_button!!.text = "0"
                     }
                 }
                 .setNegativeButton("取消") { dialog, which -> dialog.dismiss() }.show()
@@ -767,14 +732,14 @@ class MainActivity : AppCompatActivity() {
                     //AAA=1;
 
                     val timeFormat = TimeFormat()
-                    qifeishikeTextView!!.text = timeFormat.BeiJingtime(QFSK - 8 * 3600000)
+                    qifeishike_text_view!!.text = timeFormat.BeiJingtime(QFSK - 8 * 3600000)
                     biaogetianchong()
-                    jishiButton!!.visibility = View.GONE
-                    jishichongzhiButton!!.visibility = View.VISIBLE
+                    jishi_button!!.visibility = View.GONE
+                    chongzhi_button.visibility = View.VISIBLE
                 }
                 .setNegativeButton("取消") { dialog, which ->
                     dialog.dismiss()
-                    shezhiButton!!.visibility = View.VISIBLE
+                    shezhi_button.visibility = View.VISIBLE
                 }.show()
     }
 
@@ -887,8 +852,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun writeDB() {
+    fun writeDB() {
+        /**目标文件*/
+        val databasefilename = DATABASE_PATH + "/" + DATABASE_NAME
+        val file = File(databasefilename)
+        //判断是否存在，如存在就不复制
+        if (!file.exists()){
+            //获取文件的InputStream对象
+            val inputStream = resources.assets.open(DATABASE_NAME)
+            val fos = FileOutputStream(databasefilename)
+            val buffer = ByteArray(100)
+            var count: Int
+            while (true){
+                count = inputStream.read(buffer)
+                if (count<0){
+                    break
+                }
+                fos.write(buffer,0,count)
+            }
+            fos.close()
+            inputStream.close()
+        }
+    }
+    /*private fun writeDB() {
         // f = DATABASE_PATH_NAME;
         var fout: FileOutputStream? = null
         var inputStream: InputStream? = null
@@ -931,7 +917,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
+    }*/
 
 
     private inner class hangdian_info internal constructor(internal val hangdianname: String,
@@ -947,7 +933,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private inner class ShijianchaTolong internal constructor(shijiancha_str: String) {
+    private inner class ShijianchaTolong internal constructor(shijiancha_str: String?) {
         internal var daichuli_str: String
         internal var i = 0
         internal var j = 1
@@ -1104,7 +1090,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (position == numberselectHangdian) {
                     hangdianLinear.setBackgroundColor(Color.parseColor("#cfdced"))
-                    hangdianinfoListView!!.setSelection(numberselectHangdian)
+                    hangdianinfo_listview!!.setSelection(numberselectHangdian)
                 } else {
                     hangdianLinear.setBackgroundColor(Color.WHITE)
                 }
@@ -1119,7 +1105,7 @@ class MainActivity : AppCompatActivity() {
                 return 0
             }
         }
-        hangdianinfoListView!!.adapter = mBaseAdapter
+        hangdianinfo_listview!!.adapter = mBaseAdapter
     }
 
     private fun timeToms(time: String): Long {
@@ -1160,43 +1146,45 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+/*
     private fun findview() {
-        mGpsInfo = this.findViewById(R.id.TextView_GpsInfo) as TextView
-        weiduTextView = this.findViewById(R.id.weidu_text_view) as TextView
-        jingduTextView = this.findViewById(R.id.jingdu_text_view) as TextView
+        TextView_GpsInfo = this.findViewById(R.id.TextView_GpsInfo) as TextView
+        weidu_text_view = this.findViewById(R.id.weidu_text_view) as TextView
+        jingdu_text_view = this.findViewById(R.id.jingdu_text_view) as TextView
         shezhiButton = this.findViewById(R.id.shezhi_button) as Button
-        daifeijuTextView = this.findViewById(R.id.daifeiju_text_view) as TextView
-        daifeishiTextView = this.findViewById(R.id.daifeishi_text_view) as TextView
-        disuTextView = this.findViewById(R.id.disu_text_view) as TextView
+        daifeiju_text_view = this.findViewById(R.id.daifeiju_text_view) as TextView
+        daifeishi_text_view = this.findViewById(R.id.daifeishi_text_view) as TextView
+        disu_text_view = this.findViewById(R.id.disu_text_view) as TextView
 
-        daifeiju_lableTextView = this.findViewById(R.id.daifeiju_lable_text_view) as TextView
-        daifeishi_lableTextView = this.findViewById(R.id.daifeishi_lable_text_view) as TextView
-        yudashike_lableTextView = this.findViewById(R.id.yudashike_lable_text_view) as TextView
-        disu_lableTextView = this.findViewById(R.id.disu_lable_text_view) as TextView
-        weidu_lableTextView = this.findViewById(R.id.weidu_lable_text_view) as TextView
-        jingdu_lableTextView = this.findViewById(R.id.jingdu_lable_text_view) as TextView
+        daifeiju_lable_text_view = this.findViewById(R.id.daifeiju_lable_text_view) as TextView
+        daifeishi_lable_text_view = this.findViewById(R.id.daifeishi_lable_text_view) as TextView
+        yudashike_lable_text_view = this.findViewById(R.id.yudashike_lable_text_view) as TextView
+        disu_lable_text_view = this.findViewById(R.id.disu_lable_text_view) as TextView
+        weidu_lable_text_view = this.findViewById(R.id.weidu_lable_text_view) as TextView
+        jingdu_lable_text_view = this.findViewById(R.id.jingdu_lable_text_view) as TextView
 
         jishiButton = this.findViewById(R.id.jishi_button) as Button
-        qifeishikeTextView = this.findViewById(R.id.qifeishike_text_view) as TextView
-        weixingshijianTextView = this.findViewById(R.id.weixingshijian_text_view) as TextView
-        shijianwuchaTextView = this.findViewById(R.id.shijianwucha_text_view) as TextView
+        qifeishike_text_view = this.findViewById(R.id.qifeishike_text_view) as TextView
+        weixingshijian_text_view = this.findViewById(R.id.weixingshijian_text_view) as TextView
+        shijianwucha_text_view = this.findViewById(R.id.shijianwucha_text_view) as TextView
         jichangSpinner = this.findViewById(R.id.jichang_spinner) as Spinner
-        hangxianSpinner = this.findViewById(R.id.hangxian_spinner) as Spinner
-        hangdianSpinner = this.findViewById(R.id.hangdian_spinner) as Spinner
-        qifeifangxiangSpinner = this.findViewById(R.id.qifeifangxiang_spinner) as Spinner
-        yingfeidisuTextView = this.findViewById(R.id.yingfeidisu_text_view) as TextView
-        hangdianinfoListView = this.findViewById(R.id.hangdianinfo_listview) as ListView
-        yudashikeTextView = this.findViewById(R.id.yudashike_text_view) as TextView
-        mubiaoyudashikeTextView = this.findViewById(R.id.mubiaoyudashike_text_view) as TextView
-        jishichongzhiButton = this.findViewById(R.id.chongzhi_button) as Button
-        sheqifeishiButton = this.findViewById(R.id.sheqifeishi_button) as Button
-        bucangshijianButton = this.findViewById(R.id.buchangshijian_button) as Button
-        mubiaotuisuanButton = this.findViewById(R.id.mubiaotuisuan_button) as Button
-        yincangxiangxiButton = this.findViewById(R.id.yincangxiangxi_button) as Button
-        xianshixiangxiButton = this.findViewById(R.id.xianshixiangxi_button) as Button
+        hangxian_spinner = this.findViewById(R.id.hangxian_spinner) as Spinner
+        hangdian_spinner = this.findViewById(R.id.hangdian_spinner) as Spinner
+        qifeifangxiang_spinner = this.findViewById(R.id.qifeifangxiang_spinner) as Spinner
+        yingfeidisu_text_view = this.findViewById(R.id.yingfeidisu_text_view) as TextView
+        hangdianinfo_listview = this.findViewById(R.id.hangdianinfo_listview) as ListView
+        yudashike_text_view = this.findViewById(R.id.yudashike_text_view) as TextView
+        mubiaoyudashike_text_view = this.findViewById(R.id.mubiaoyudashike_text_view) as TextView
+        chongzhi_button = this.findViewById(R.id.chongzhi_button) as Button
+        sheqifeishi_button = this.findViewById(R.id.sheqifeishi_button) as Button
+        buchangshijian_button = this.findViewById(R.id.buchangshijian_button) as Button
+        mubiaotuisuan_button = this.findViewById(R.id.mubiaotuisuan_button) as Button
+        yincangxiangxi_button = this.findViewById(R.id.yincangxiangxi_button) as Button
+        xianshixiangxi_button = this.findViewById(R.id.xianshixiangxi_button) as Button
         tujiSpinner = this.findViewById(R.id.shifoutuji_spinner) as Spinner
-        bucangshijianTextView = this.findViewById(R.id.buchangshijian_text_view) as TextView
+        buchangshijian_text_view = this.findViewById(R.id.buchangshijian_text_view) as TextView
     }
+*/
 
 
     override fun onResume() {
@@ -1262,9 +1250,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+/*
     companion object {
         var DATABASE_PATH: String
         var DATABASE_NAME: String
         private val PREFS_QFSK = "StoredQFSK"
     }
+*/
 }
