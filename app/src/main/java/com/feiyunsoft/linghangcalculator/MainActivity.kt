@@ -785,16 +785,16 @@ class MainActivity : AppCompatActivity() {
             val duStr: String
             val fenStr: String
 //            wd = wd1
-            if (du < 10) {
-                duStr = "0" + du
+            duStr = if (du < 10) {
+                "0" + du
             } else {
-                duStr = "" + du
+                du.toString()
             }
             val fen = (wd1 - du) * 60
-            if (fen < 10) {
-                fenStr = "0" + String.format("%.1f", fen)
+            fenStr = if (fen < 10) {
+                "0" + String.format("%.1f", fen)
             } else {
-                fenStr = "" + String.format("%.1f", fen)
+                "" + String.format("%.1f", fen)
             }
             return "$duStr°$fenStr'"
         }
@@ -805,16 +805,16 @@ class MainActivity : AppCompatActivity() {
             val duStr: String
             val fenStr: String
 //            jd = jd1
-            if (du < 10) {
-                duStr = "0" + du
+            duStr = if (du < 10) {
+                "0" + du
             } else {
-                duStr = "" + du
+                du.toString()
             }
             val fen = (jd1 - du) * 60
-            if (fen < 10) {
-                fenStr = "0" + String.format("%.1f", fen)
+            fenStr = if (fen < 10) {
+                "0" + String.format("%.1f", fen)
             } else {
-                fenStr = "" + String.format("%.1f", fen)
+                "" + String.format("%.1f", fen)
             }
             return "$duStr°$fenStr'"
 
