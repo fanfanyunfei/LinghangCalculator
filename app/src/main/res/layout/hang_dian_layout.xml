@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/hangdian_id_textview"
+            android:text="ID"
+            android:textSize="30sp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:visibility="gone"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/shunxu_textview"
+            android:text="顺序"
+            android:textSize="15sp"
+            android:layout_weight="0.5"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/hangdianname_textview"
+            android:text="航点"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/hangdianweidu_textview"
+            android:text="纬度"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:id="@+id/hangdianjingdu_textview"
+            android:text="经度"
+            android:textSize="15sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/zhunshi1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="向南准时"
+                android:textSize="15sp"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hangdianzhunshi1_feituji_textview"
+                    android:text="非突击"
+                    android:textSize="15sp"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hangdianzhunshi1_tuji_textview"
+                    android:text="突击"
+                    android:textSize="15sp"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/zhunshi2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="向北准时"
+                android:textSize="15sp"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hangdianzhunshi2_feituji_textview"
+                    android:text="非突击"
+                    android:textSize="15sp"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/hangdianzhunshi2_tuji_textview"
+                    android:text="突击"
+                    android:textSize="15sp"
+                    android:layout_weight="1"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/background_dark"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/hangdian_listview"></ListView>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/add_button"
+        android:text="新增"/>
+
+    <!--    <Button
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/add_data"
+          android:text="Add Data"/>-->
+</LinearLayout>

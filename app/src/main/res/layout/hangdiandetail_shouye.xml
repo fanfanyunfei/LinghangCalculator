@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/hangdian_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/hangdianname_textview"
+        android:text="航点"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/hangdianweidu_textview"
+        android:text="纬度"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/hangdianjingdu_textview"
+        android:text="经度"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/hangdianzhunshi_textview"
+        android:text="准时"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:id="@+id/yudashikebiaozhun_textview"
+            android:text="预达时刻"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+    </LinearLayout>
+</LinearLayout>

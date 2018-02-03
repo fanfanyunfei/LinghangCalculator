@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip"
+    android:gravity="center_horizontal">
+
+
+    <!--- <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="补偿时间(秒)："
+         android:textSize="20sp"
+         android:layout_gravity="left"
+         android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/sheqifeishi_edittext"
+        android:textSize="25sp"
+        android:scrollHorizontally="true"
+        android:autoText="false"
+        android:capitalize="none"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="true"
+        android:inputType="number"
+        android:hint="格式：时时分分秒秒,183030"/>
+</LinearLayout>

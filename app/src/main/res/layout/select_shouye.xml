@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/jichang_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="机场："
+        android:textSize="20px" />
+    <Spinner
+        android:id="@+id/jichang_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="100px"
+        android:spinnerMode="dropdown"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="起飞方向："
+        android:textSize="20px" />
+    <Spinner
+        android:id="@+id/qifeifangxiang_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="30px"
+        android:spinnerMode="dropdown"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="航线："
+        android:textSize="20px" />
+    <Spinner
+        android:id="@+id/hangxian_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="100px"
+        android:spinnerMode="dropdown"/>
+</LinearLayout>

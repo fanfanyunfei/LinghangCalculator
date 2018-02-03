@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">领航准时计算</string>
+    <string name="title_activity_mubiao">目标推算</string>
+    <string name="version_name" />
+    <string name="can_not_find_version_name" />
+    <string name="gengxinrizhi">更新日志：</string>
+    <string name="gengxinrizhineirong">
+\n
+        版本：V2.2.1beta\n
+        时间：2018-1-9\n\n
+        1．修复因机场同名、航线同名而产生的bug。\n\n\n
+        
+
+        版本：V2.2beta\n
+时间：2017-12-8\n\n
+1．系统时间更改为卫星时间。使用准时计算器时，不需要再校对系统时间。目前使用目标推算页面仍需要校对系统时间。\n
+2．添加显示/隐藏详细按钮，用以显示或隐藏部份GPS相关信息。\n
+3．添加航路点自动步进功能，待飞距小于5km时步进。\n
+4．退出软件时，添加确认提示。\n
+5．删除时添加确认提示。\n
+6．修订了一些Bug。\n
+    </string>
+    <string name="hangdianguanli">航点管理</string>
+    <string name="shengming">
+        Designed&#160;By&#160;FeiyunSoft&#160;@&#160;2017
+    </string>
+    <string name="查询所有可用机场">select * from JiChang where used = \'1\'</string>
+</resources>
