@@ -775,21 +775,22 @@ class MainActivity : AppCompatActivity() {
 
 
     private inner class JingweiduFormat {
-        private var wd: Double = 0.toDouble()
-        private var jd: Double = 0.toDouble()
+        /*private var wd: Double = 0.toDouble()
+        private var jd: Double = 0.toDouble()*/
 
         @SuppressLint("DefaultLocale")
         internal fun weiDu(wd1: Double): String {
-            val du: Int = Math.floor(wd).toInt()
+
+            val du: Int = Math.floor(wd1).toInt()
             val duStr: String
             val fenStr: String
-            wd = wd1
+//            wd = wd1
             if (du < 10) {
                 duStr = "0" + du
             } else {
                 duStr = "" + du
             }
-            val fen = (wd - du) * 60
+            val fen = (wd1 - du) * 60
             if (fen < 10) {
                 fenStr = "0" + String.format("%.1f", fen)
             } else {
@@ -800,16 +801,16 @@ class MainActivity : AppCompatActivity() {
 
         @SuppressLint("DefaultLocale")
         internal fun jingDu(jd1: Double): String {
-            val du: Int = Math.floor(jd).toInt()
+            val du: Int = Math.floor(jd1).toInt()
             val duStr: String
             val fenStr: String
-            jd = jd1
+//            jd = jd1
             if (du < 10) {
                 duStr = "0" + du
             } else {
                 duStr = "" + du
             }
-            val fen = (jd - du) * 60
+            val fen = (jd1 - du) * 60
             if (fen < 10) {
                 fenStr = "0" + String.format("%.1f", fen)
             } else {
