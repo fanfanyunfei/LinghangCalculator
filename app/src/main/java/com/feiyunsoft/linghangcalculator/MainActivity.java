@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private int numberstoredShifoutuji;
 
     /**
-     * java
+     * Kotlin
      * @param savedInstanceState
      */
     @Override
