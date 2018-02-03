@@ -98,7 +98,10 @@ public class MainActivity extends AppCompatActivity {
     private int numberstoredQifeifangxiang;
     private int numberstoredShifoutuji;
 
-
+    /**
+     * java
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
