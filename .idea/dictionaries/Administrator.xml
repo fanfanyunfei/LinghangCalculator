@@ -2,20 +2,51 @@
   <dictionary name="Administrator">
     <words>
       <w>bianjijichang</w>
+      <w>biaogetianchong</w>
+      <w>biaozhun</w>
+      <w>bucangshijian</w>
+      <w>daichuli</w>
       <w>databasefilename</w>
       <w>dongxi</w>
+      <w>hangdian</w>
+      <w>hangdianjingdu</w>
+      <w>hangdianname</w>
+      <w>hangdianweidu</w>
+      <w>hangxia</w>
+      <w>hangxian</w>
       <w>jichang</w>
       <w>jichanglist</w>
       <w>jichangmap</w>
       <w>jichangname</w>
       <w>jichangnamedetail</w>
       <w>jichangsimple</w>
+      <w>jingtime</w>
+      <w>jingweidu</w>
+      <w>linghang</w>
       <w>mget</w>
+      <w>miao</w>
+      <w>mlocation</w>
       <w>nanbei</w>
+      <w>prefsqfsk</w>
       <w>qifeifangxian</w>
       <w>qifeifangxiang</w>
+      <w>sheqifeishi</w>
+      <w>shezhibuchangshijian</w>
+      <w>shifoutuji</w>
+      <w>shijiancha</w>
+      <w>spinnerlist</w>
+      <w>spinnermap</w>
+      <w>stime</w>
+      <w>storedqfsk</w>
+      <w>tian</w>
       <w>tianchonglistview</w>
+      <w>tolong</w>
       <w>xiang</w>
+      <w>xiaoshi</w>
+      <w>yudashike</w>
+      <w>zhunshi</w>
+      <w>zhunshicha</w>
+      <w>zhunshishijiancha</w>
     </words>
   </dictionary>
 </component>
