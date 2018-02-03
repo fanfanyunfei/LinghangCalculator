@@ -733,6 +733,7 @@ class MainActivity : AppCompatActivity() {
     /**
      * 事件转换自定义类
      * beijingtime方法根据是否北京时间将ms格式事件转化为换hh：mm：ss
+     *
      */
     private inner class TimeFormat {
         private var mGPStime: Double = 0.toDouble()
