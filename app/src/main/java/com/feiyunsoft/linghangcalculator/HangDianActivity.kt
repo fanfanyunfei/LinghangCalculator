@@ -26,14 +26,16 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
 
-import com.feiyunsoft.linghangcalculator.MainActivity.Companion.DATABASE_NAME
+/*
+import com.feiyunsoft.linghangcalculator.MainActivity.DATABASE_NAME
 import com.feiyunsoft.linghangcalculator.MainActivity.Companion.DATABASE_PATH
+*/
 
 class HangDianActivity : AppCompatActivity() {
 
     private var sqLiteDatabase: SQLiteDatabase? = null
     private var hangdianlistView: ListView? = null
-    private var hangxian_id: String? = null
+    private var hangxian_id: String = ""
     private var fangxiang: String? = null
     /*    private static String DATABASE_PATH;
     private static String DATABASE_NAME;*/
@@ -52,9 +54,11 @@ class HangDianActivity : AppCompatActivity() {
         val zhunshi1 = findViewById(R.id.zhunshi1) as TextView
         val zhunshi2 = findViewById(R.id.zhunshi2) as TextView
 
+/*
         Companion.setDATABASE_PATH(filesDir.toString() + "/databases")
         Companion.setDATABASE_NAME("shuju.db")
-        val f = Companion.getDATABASE_PATH() + "/" + Companion.getDATABASE_NAME()
+*/
+        val f = MainActivity.DATABASE_PATH + "/" + MainActivity.DATABASE_NAME
         sqLiteDatabase = openOrCreateDatabase(f, Context.MODE_PRIVATE, null)
 
         fangxiang = qifeifangxiang()
@@ -116,7 +120,7 @@ class HangDianActivity : AppCompatActivity() {
         }
     }
 
-    private fun shanchuhangdian(hangdian_id: String, hangdianmap: HashMap<String, String>) {
+    private fun shanchuhangdian(hangdian_id: String?, hangdianmap: HashMap<String, String>) {
 
         sqLiteDatabase!!.execSQL("update HangDian set used = '0' where hangdian_ID = '$hangdian_id'")
 
@@ -392,7 +396,7 @@ class HangDianActivity : AppCompatActivity() {
                 .setNegativeButton("取消") { dialog, which -> dialog.dismiss() }.show()
     }
 
-    private fun findzuidashunxu(hangxian_id: String?): Int? {
+    private fun findzuidashunxu(hangxian_id: String): Int? {
         val cursor = sqLiteDatabase!!.rawQuery("select * from HangDian where hangxian_ID = ? and used = ? ", arrayOf<String>(hangxian_id, "1"))
         val shunxu = ArrayList<Int>()
         shunxu.add(0)
@@ -404,7 +408,7 @@ class HangDianActivity : AppCompatActivity() {
         return Collections.max(shunxu)
     }
 
-    private fun xiugaishunxu(hangdianshunxu_befor: String, hangdianshunxu_after: String) {
+    private fun xiugaishunxu(hangdianshunxu_befor: String?, hangdianshunxu_after: String) {
         var i = Integer.parseInt(hangdianshunxu_befor)
         val j = Integer.parseInt(hangdianshunxu_after)
         if (i > j) {
@@ -550,7 +554,7 @@ class HangDianActivity : AppCompatActivity() {
         return jingweidu_double
     }
 
-    private fun timeToms(time: String): Long? {
+    private fun timeToms(time: String): Long {
         val daichuli_str = time + "      "
         var i = 0
         var j = 1
@@ -660,7 +664,7 @@ class HangDianActivity : AppCompatActivity() {
     }
 
     private inner class Zhunshishijiancha internal constructor(zhunshidong: String, zhunshinan: String, zhunshixi: String, zhunshibei: String) {
-        internal var zuixiaozhunshi: Long? = 0L
+        internal var zuixiaozhunshi: Long = 0L
         internal var shijiancha: Long? = null
         internal var zhunshicha = "0|0|0|0"
         internal var zuixiaozhunshifangxiang = ""

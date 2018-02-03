@@ -43,8 +43,10 @@ import java.util.TimerTask
 
 class MainActivity : AppCompatActivity() {
 
+/*
     var DATABASE_PATH: String = ""
     var DATABASE_NAME: String = ""
+*/
     private val PREFS_QFSK = "StoredQFSK"
 
     private val TAG = "LinghangCalculator"
@@ -1250,11 +1252,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-/*
     companion object {
-        var DATABASE_PATH: String
-        var DATABASE_NAME: String
+        var DATABASE_PATH: String = ""
+        var DATABASE_NAME: String = ""
         private val PREFS_QFSK = "StoredQFSK"
     }
-*/
 }

@@ -48,7 +48,7 @@ class HangXianActivity : AppCompatActivity() {
 
         /*String DATABASE_PATH = getFilesDir() + "/databases";
         String DATABASE_NAME = "shuju.db";*/
-        val f = Companion.getDATABASE_PATH() + "/" + Companion.getDATABASE_NAME()
+        val f = MainActivity.DATABASE_PATH + "/" + MainActivity.DATABASE_NAME
         sqLiteDatabase = openOrCreateDatabase(f, Context.MODE_PRIVATE, null)
 
         tianchonglistview()
@@ -105,7 +105,7 @@ class HangXianActivity : AppCompatActivity() {
         }
     }
 
-    private fun shanchu(hangxian_id: String) {
+    private fun shanchu(hangxian_id: String?) {
 
         sqLiteDatabase!!.execSQL("update HangXian set used = '0' where hangxian_ID = '$hangxian_id'")
         tianchonglistview()
@@ -132,7 +132,7 @@ class HangXianActivity : AppCompatActivity() {
                 .setNegativeButton("取消") { dialog, which -> dialog.dismiss() }.show()
     }
 
-    private fun bianjijichang(hangxian_id: String, hangxian_name: String) {
+    private fun bianjijichang(hangxian_id: String?, hangxian_name: String?) {
         val factory = LayoutInflater.from(this)
         @SuppressLint("InflateParams") val textEntryView = factory.inflate(R.layout.hangxiandetail, null)
         val hangxiannamedetailEditText = textEntryView.findViewById(R.id.hangxianname_detail_edittext) as EditText
